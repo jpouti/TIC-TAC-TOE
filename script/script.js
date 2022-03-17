@@ -16,14 +16,24 @@ const gameBoard = (() => {
     const scoreBoard = (text) => {
         document.querySelector(".scoreboard-container").textContent = text;
     }
-
-    return {board, winCombinations, scoreBoard};
+    const changePlayer1 = (name) => {
+        player1.name = name;
+        document.getElementById('player1').textContent = name;
+        return player1;
+    }
+    const changePlayer2 = (name) => {
+        player2.name = name;
+        document.getElementById('player2').textContent = name;
+        return player2;
+    }
+    return {board, winCombinations, scoreBoard, changePlayer1, changePlayer2};
 })();
 
 const playerFactory = (name, symbol) => {
     return {name, symbol}
 }
 
+// create players as default
 const player1 = playerFactory("Player 1", "X");
 const player2 = playerFactory("Player 2", "O");
 
@@ -87,6 +97,14 @@ function clickHandler(e) {
 document.querySelector('#new-game').addEventListener("click", () => {
     gameFlow.newGame();
 });
+
+document.querySelector('#player-names').addEventListener('click', () => {
+    gameFlow.newGame();
+    let name1 = prompt("Please input a new player to replace: " + player1.name);
+    gameBoard.changePlayer1(name1);
+    let name2 = prompt("Who dares to challenge " + player1.name + " with the lucky symbol: " + player2.symbol);
+    gameBoard.changePlayer2(name2);
+})
 
 // check if round has end to a win or a tie
 function checkScore() {

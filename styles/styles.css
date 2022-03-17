@@ -73,17 +73,31 @@ body {
 
 .options-container {
     display: flex;
-    flex-direction: column;
-    align-items: center;   
+    align-items: center;
+    justify-content: center;
+    gap: 5vw;
 }
 
-#new-game {
+.options-container > button {
     font-size: 1.25rem;
     font-weight: bold;
     margin-top: 2.5vh;
-    border: 2px solid green;
+    border: 2px solid red;
     border-radius: 8px;
     padding: 0.5vh 0.5vw;
-    color: green;
+    color: red;
     background-color: whitesmoke;
+}
+
+#new-game {
+    border: 2px solid green;
+    color: green;
+}
+
+#new-game:hover {
+    background-color: lightgreen;
+}
+
+#player-names:hover {
+    background-color: lightcoral;
 }
