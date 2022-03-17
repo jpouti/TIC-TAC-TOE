@@ -37,22 +37,38 @@ const gameFlow = (() => {
     }
     const win = (name) => {
         gameBoard.scoreBoard("Winner is: " + name);
+        gameFlow.endGame();
+    }
+    const tie = () => {
+        gameBoard.scoreBoard("It is a draw, nobody wins...");
+        gameFlow.endGame();
+    }
+    const newGame = () => {
+        console.log('new game');
+        gameBoard.board = [];
+        for (let index = 0; index < 9; index++) {
+            gameBoard.board.push("");
+        }
+        gameFlow.displayPlay();
+        gameFlow.startGame();
+        gameBoard.scoreBoard("");
+    }
+    const startGame = () => {
+        document.querySelectorAll(".gamecard").forEach(gamecard => {
+            gamecard.addEventListener("click", clickHandler)
+        });
+    }
+    const endGame = () => {
         document.querySelectorAll(".gamecard").forEach(gamecard => {
             gamecard.removeEventListener("click", clickHandler)
         });
     }
-    const tie = () => {
-        gameBoard.scoreBoard("It is a draw, nobody wins...");
-    }
-    return {win, tie, displayPlay};
+    return {win, tie, displayPlay, newGame, startGame, endGame};
 })();
-
-document.querySelectorAll(".gamecard").forEach(gamecard => {
-    gamecard.addEventListener("click", clickHandler)
-});
 
 // Adds the the symbol to the corresponging index on the gameboard array
 function clickHandler(e) {
+    gameBoard.scoreBoard("");
     let dataIndex = e.target.getAttribute("data-id");
     if (gameBoard.board[dataIndex] !== "") {
         gameBoard.scoreBoard("This spot is already taken, please try another spot");
@@ -67,6 +83,10 @@ function clickHandler(e) {
         gameFlow.displayPlay();
     }
 }
+
+document.querySelector('#new-game').addEventListener("click", () => {
+    gameFlow.newGame();
+});
 
 // check if round has end to a win or a tie
 function checkScore() {
@@ -85,3 +105,5 @@ function checkScore() {
         gameFlow.tie();
     }
 }
+
+gameFlow.startGame();
