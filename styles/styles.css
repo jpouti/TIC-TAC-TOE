@@ -40,13 +40,25 @@ body {
     font-size: 1.25rem;
 }
 
-.player {
+.players {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 5vh;
     font-size: 2rem;
     margin-top: 15vh;
+}
+
+#player2-card {
+    color: darkred;
+}
+
+#player1.active {
+    text-decoration: underline;
+}
+
+#player2.active {
+    text-decoration: underline;
 }
 
 .game-container {

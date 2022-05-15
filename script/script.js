@@ -1,3 +1,5 @@
+let winner = false; // declares whether winner is active
+
 const gameBoard = (() => {
     const board = [];
     for (let index = 0; index < 9; index++) {
@@ -42,6 +44,9 @@ const gameFlow = (() => {
     const displayPlay = () => {
         document.querySelectorAll(".gamecard").forEach((gamecard, index) => {
             gamecard.textContent = gameBoard.board[index];
+            if (gameBoard.board[index] === 'O') {
+                gamecard.style.color = 'darkred';
+            }
         });
         checkScore();
     }
@@ -62,9 +67,12 @@ const gameFlow = (() => {
         gameFlow.displayPlay();
         gameFlow.startGame();
         gameBoard.scoreBoard("");
+        winner = false;
     }
     const startGame = () => {
+        document.getElementById('player1').className = 'active';
         document.querySelectorAll(".gamecard").forEach(gamecard => {
+            gamecard.style.color = 'navy'; //set default color
             gamecard.addEventListener("click", clickHandler)
         });
     }
@@ -87,8 +95,12 @@ function clickHandler(e) {
         let emptyCards = gameBoard.board.filter(x => x ==="").length;
         if (emptyCards % 2 === 0) {
             gameBoard.board[dataIndex] = 'O'
+            document.getElementById('player1').className = 'active';
+            document.getElementById('player2').className = '';
         } else {
             gameBoard.board[dataIndex] = 'X';
+            document.getElementById('player2').className = 'active';
+            document.getElementById('player1').className = '';
         }
         gameFlow.displayPlay();
     }
@@ -113,15 +125,23 @@ function checkScore() {
         if (gameBoard.board[a] != "" && gameBoard.board[a]==gameBoard.board[b] && gameBoard.board[b]==gameBoard.board[c]) {
             if (gameBoard.board[a] === "X") {
                 gameFlow.win(player1.name);
+                document.getElementById('player1').className = 'active';
+                document.getElementById('player2').className = '';
+                winner = true;
+                return player1.name;
             } else {
                 gameFlow.win(player2.name);
+                document.getElementById('player2').className = 'active';
+                document.getElementById('player1').className = '';
+                winner = true;
+                return player2.name;
             }
-        }        
+        } else if (gameBoard.board.filter(x => x ==="").length === 0) {
+            if (winner === false) {
+                gameFlow.tie();
+            }
+        }
     });
-    let emptyCards = gameBoard.board.filter(x => x ==="").length;
-    if (emptyCards === 0) {
-        gameFlow.tie();
-    }
 }
 
 gameFlow.startGame();
